@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>常用指令：v-for</title>
+</head>
+<body>
+    <!-- 对数组或对象进行循环操作 -->
+
+    <div id="itany">
+        <!-- {{arr}} -->
+        <ul>
+            <!-- 普通循环 -->
+            <!-- <li v-for='value in arr'>{{value}}</li> -->
+            <!-- <li v-for='value in user'>{{value}}</li>  -->
+            
+            <!-- 键值循环 -->
+            <!-- <li v-for='(value,key) in arr'>{{key}}={{value}}</li> -->
+            <!-- <li v-for='(value,key) in user'>{{key}}={{value}}</li> -->
+
+            <!-- 可以直接循环包含重复数据的集合,可以通过指令：key属性绑定唯一key，当更新元素时可重用元素，提高效率，类似于vue1.0中track-by -->
+            <!-- <li v-for='(value,key) in arr2' :key='key'>{{key}}={{value}}</li> -->
+
+        </ul>
+        <table>
+            <tr>
+                <th>索引</th>
+                <th>id</th>
+                <th>name</th>
+                <th>年龄</th>
+            </tr>
+            <tr v-for='(user,index) in users'>
+                <td>{{index+1}}</td> <!-- 索引 -->
+                <td>{{user.id}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.age}}</td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>
+
+<script src="../js/vue.js"></script>
+<script>
+
+    var vm = new Vue({
+        el: '#itany',  //vue2.0中不允许将vue实例挂在到<html>或<body>元素，在vue1.0中是可以的
+        data: { //存储数据
+           arr: [22,1,5,4,11],
+           user: {id:456,name:'zhangsna',age:32},
+           arr2:[12,4,5,34,2,11,12],
+           users: [
+               {id:1,name:'zhangsan',age:23},
+               {id:2,name:'李四',age:16},
+               {id:3,name:'王五',age:28},
+               {id:3,name:'王五',age:28},
+           ]
+        }
+    })
+</script>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>常用指令：v-show/v-if</title>
+</head>
+<body>
+    <!-- v-show/v-if 用来显示或隐藏元素，
+        v-show是通过display实现，
+        v-if是每次删除后再重新创建，
+        与angular中类似 -->
+
+    <div id="itany">
+       <!-- <button v-on:click="change">隐藏</button> -->
+       <button v-on:click="flag=!flag">隐藏</button>
+       <br>
+       <div v-if="flag" style="width:100px;height:100px;background:red">内容</div>
+    </div>
+
+</body>
+</html>
+
+<script src="../js/vue.js"></script>
+<script>
+
+    var vm = new Vue({
+        el: '#itany', 
+        data: { //存储数据
+           flag: true
+        },
+        methods: { //存储方法
+           change() {
+               this.flag = !this.flag;
+           }
+        }
+    })
+</script>
