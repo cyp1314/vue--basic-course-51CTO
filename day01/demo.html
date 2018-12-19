@@ -1,0 +1,127 @@
+<div class="t-root" style="margin-bottom: 1.6rem;">
+        <section class="shopping-cart-title" flex f-d="r" f-w="n" j-c="s-b" a-i="center">
+            <div>全部商品</div>
+            <div>
+                <a href="javascript:;" @click="editorShopping">{{ showtext ? '编辑' : '完成' }}</a>
+            </div>
+        </section>
+
+        <!-- 购物车商品列表 -->
+        <section class="shopping-list">
+         <template v-if="shoppingList.length > 0">
+            <div v-for="(shopping,index) in shoppingList" class="item" flex f-d="r" f-w="n" j-c="s-b" a-i="center">
+                <div class="shopping-checkbox">
+                    <input :id="shopping.id" type="checkbox" name="" class="" v-model="shopping.checked">
+                    <label :for="shopping.id"></label>
+                </div>
+                <div class="shopping-box" flex f-d="r" f-w="n" j-c="start" a-i="center">
+                    <div><img :src="shopping.imgsrc" alt=""></div>
+                    <div class="info">
+                        <h3>{{ shopping.title }}</h3>
+                        <div class="acount" flex f-d="r" f-w="n" j-c="s-b" a-i="center">
+                            <span class="money">￥{{ shopping.money }}</span>
+                            <div class="count" flex f-d="r" f-w="n" j-c="center" a-i="center">
+                                <span class="shopping-num" v-show="showtext">x{{ shopping.shoppingnum }}</span>
+                                <div flex f-d="r" f-w="n" j-c="center" a-i="center" v-show="!showtext">
+                                    <span class="minus" :class="{active : shopping.shoppingnum > 1}" @click="reduce(index)">
+                                    <i class="icon iconfont icon-t-icon8"></i>
+                                    </span>
+                                    <input type="text" readonly disabled class="showNumber" v-model="shopping.shoppingnum">
+                                    <span class="add" :class="{active : shopping.shoppingnum < 100}" @click="add(index)">
+                                    <i class="icon iconfont icon-t-icon7"></i>
+                                    </span>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </template>
+
+        </section>
+
+
+        <section class="download-order-footer" flex f-d="r" f-w="n" j-c="s-b" a-i="center">
+            <div class="shopping-checkall">
+                <input id="checkall" type="checkbox" class="" name="">
+                <label for="checkall">
+                    <i>全选</i>
+                </label>
+            </div>
+            <div class="left">
+                总计：<b>￥684</b>
+            </div>
+            <div class="right">
+                <a href="javascript:;" flex f-d="r" f-w="n" j-c="center" a-i="center" v-show="showtext">去付款</a>
+                <a @click="removeShopping" href="javascript:;" flex f-d="r" f-w="n" j-c="center" a-i="center" v-show="!showtext">删除</a>
+            </div>
+        </section>
+
+    </div>
+<script>
+    var vm = new Vue({
+        el : ".t-root",
+        data : {
+            showtext : true,
+            shoppingList : [
+                {
+                    id : 11,
+                    title : '贡牌茶叶西湖春茶正宗雨前龙井茶礼盒装礼盒装160g礼盒装',
+                    money : 48,
+                    imgsrc : 'images/download-order-img-11@2x.png',
+                    shoppingnum : 1,
+                    checked : true
+                },
+                {
+                    id : 22,
+                    title : '贡牌茶叶西湖春茶正宗雨前龙井茶礼盒装礼盒装160g礼盒装',
+                    money : 98,
+                    imgsrc : 'images/download-order-img-11@2x.png',
+                    shoppingnum : 1,
+                    checked : true
+                },
+                {
+                    id : 33,
+                    title : '贡牌茶叶西湖春茶正宗雨前龙井茶礼盒装礼盒装160g礼盒装',
+                    money : 148,
+                    imgsrc : 'images/download-order-img-11@2x.png',
+                    shoppingnum : 1,
+                    checked : true
+                }
+            ]
+        },
+        computed : {
+        },
+        methods : {
+            editorShopping : function(){
+               this.showtext = !this.showtext;
+            },
+            removeShopping : function(){
+                var that = this;
+                that.shoppingList.forEach(function(value,index){
+                    //只有为true时才删除
+                    if (value.checked) {
+                        that.shoppingList.splice(index,1);
+                       // console.log(index);
+                    }
+                });
+            },
+            add : function(index){
+                var shopping = this.shoppingList[index];
+                if (shopping.shoppingnum == 100) {
+                    return false;
+                }else {
+                    shopping.shoppingnum ++;
+                }
+            },
+            reduce : function(index){
+                var shopping = this.shoppingList[index];
+                if (shopping.shoppingnum == 1){
+                    return false;
+                }else {
+                    shopping.shoppingnum --;
+                }
+            }
+        }
+    });
+</script>

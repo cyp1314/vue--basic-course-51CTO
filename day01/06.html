@@ -1,28 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>练习：用户管理</title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
 </head>
+
 <body>
-    
+    <div class="container">
+        <h2 class="text-center">添加用户</h2>
+        <form action="" class="form-horizontal">
+            <div class="form-group">
+                <label for="name" class="control-label col-sm-2 col-sm-offset-2">姓名</label>
+                <div class="col-sm-6">
+                    <input v-model="user.name" type="text" class="form-control" id="name" placeholder="请输入姓名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="age" class="control-label col-sm-2 col-sm-offset-2">年龄</label>
+                <div class="col-sm-6">
+                    <input v-model="user.age" type="text" class="form-control" id="age" placeholder="请输入年龄">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email" class="control-label col-sm-2 col-sm-offset-2">邮箱</label>
+                <div class="col-sm-6">
+                    <input v-model="user.email" type="text" class="form-control" id="email" placeholder="请输入邮箱">
+                </div>
+            </div>
+            <div class="form-group text-center">
+                <input v-on:click="addUser" type="button" value="添加" class="btn btn-primary">
+                <input type="reset" value="重置" class="btn btn-primary">
+            </div>
+        </form>
+        <hr>
+
+        <table class="table table-border table-hover">
+            <caption class="h3 text-center text-info">用户列表</caption>
+            <thead>
+                <tr>
+                    <th class="text-center">序号</th>
+                    <th class="text-center">姓名</th>
+                    <th class="text-center">年龄</th>
+                    <th class="text-center">邮箱</th>
+                    <th class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,index) in users "  class="text-center">
+                    <td class="text-center">{{index+1}}</td>
+                    <td class="text-center">{{item.name}}</td>
+                    <td class="text-center">{{item.age}}</td>
+                    <td class="text-center">{{item.email}}</td>
+                    <td>
+                        <button v-on:click="nowIndex=index" data-toggle="modal" data-target="#del" class="btn btn-danger btn-sm">删除</button>
+                    </td>
+                    <td>
+                        <input v-on:click="nowIndex=index"  type="checkbox" class="btn btn-info">
+                    </td>
+                </tr>
+                <tr>
+                        <td colspan="5" class="text-right">
+                            <button v-on:click="nowIndex=-1" data-toggle="modal" data-target="#del" class="btn btn-danger"
+                                value="">删除所有</button>
+                            <button v-on:click="deleteUser" data-toggle="modal" data-target="#del" class="btn btn-danger"
+                                value="">删除所选</button>
+                        </td>
+                    </tr>
+            </tbody>
+            <tfoot>
+               
+            </tfoot>
+        </table>
+        <!-- 模态框，弹出框 -->
+        <div class="modal fade" id="del">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                        <h4 v-show="nowIndex !== -1" class="modal-title">是否要删除用户：{{users[nowIndex]?users[nowIndex].name:''}}</h4>
+                        <h4 v-show="nowIndex === -1" class="modal-title">是否要删除所有用户</h4>
+                        <!-- <h4 v-show="nowIndex === index" class="modal-title">是否要删除所选用户</h4> -->
+                    </div>
+                    <div class="modal-body text-center">
+                        <button data-dismiss="modal" class="btn btn-primary">取消</button>
+                        <button v-on:click="deleteUser" data-dismiss="modal" class="btn btn-primary">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="undefined" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                        <h4>不能为空</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <button data-dismiss="modal" class="btn btn-primary">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 
 </body>
+
 </html>
 
+
+<script src="bootstrap/jquery.min.js"></script>
+<script src="bootstrap/bootstrap.min.js"></script>
 <script src="../js/vue.js"></script>
 <script>
-
     var vm = new Vue({
-        el: '#itany', 
+        el: '.container',
         data: { //存储数据
-           
+            users: [{
+                    name: 'tom',
+                    age: 24,
+                    email: 'tom@qq.com'
+                },
+                {
+                    name: 'jack',
+                    age: 26,
+                    email: 'tjack@qq.com'
+                },
+                {
+                    name: 'zhangsan',
+                    age: 28,
+                    email: 'zhangsna@qq.com'
+                },
+                {
+                    name: 'lisi',
+                    age: 34,
+                    email: 'lisi@qq.com'
+                },
+            ],
+            user: {},
+            nowIndex: -1, //当前要删除项的索引
+            checked: [],
+            flag1: false,
+            flag2: false,
+            flag3: false,
         },
         methods: { //存储方法
-           
+            // submit() {
+            //     if (this.user.name == undefined) {
+            //         console.log('不能为空')    
+            //     }
+            //     return flag=true;
+            // },
+            addUser() { //添加用户信息
+                this.submit();
+                //console.log(this.user.name);
+                this.users.push(this.user);
+                this.user = {};
+            },
+            deleteUser() {
+                if (this.nowIndex === -1) { //删除所有
+                    this.users = [];
+                } else {
+                    this.users.splice(this.nowIndex, 1); //从指定索引位置开始删除，删除一个
+                }
+            },
+            deleteCheckedUser() {
+                this.users.splice(this.nowIndex, 1);
+            },
+
+
         }
     })
 </script>
