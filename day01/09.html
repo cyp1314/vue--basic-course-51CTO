@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>键盘事件</title>
+</head>
+
+<body>
+    <!-- 
+      回车：@keydown.13 或@keydown.enter
+      上：@keydown.38 或@keydown.up
+
+      默认没有@keydown.a/b/c...事件，可以自定义键盘事件，也称为自定义键码或自定义键位别名
+     -->
+
+    <div id="itany">
+
+        <!-- 键盘事件：@keydown @keypress @keyup -->
+        <!-- 用户名: <input type="text" @keydown="show($event)"> -->
+
+        <!-- 简化按键的判断 -->
+        <!-- 用户名: <input type="text" @keydown="show($event)"> -->
+        <!-- 用户名: <input type="text" @keydown.13="print"> -->
+        <!-- 用户名: <input type="text" @keydown.enter="print"> -->
+        <!-- 用户名: <input type="text" @keydown.up="print"> -->
+        用户名：<input type="text" @keydown.a="print">
+
+
+
+        <!-- 事件修饰符 -->
+        <button @click.once="print">只触发一次</button>
+
+
+    </div>
+
+
+</body>
+
+</html>
+
+<script src="../js/vue.js"></script>
+<script>
+    /*
+        自定义键位别名
+    */
+    Vue.config.keyCode = {
+        a: 65,
+        f1: 112
+    }
+    var vm = new Vue({
+        el: '#itany',
+        data: { //存储数据
+
+        },
+        methods: { //存储方法
+            show(e) {
+                console.log(e.keyCode);
+                if (e.keyCode == 13) {
+                    console.log('回车');
+                }
+            },
+            print() {
+                // console.log('回车');
+                console.log('向上键');
+            },
+            write() {
+                console.log(333);
+            },
+            study() {
+                console.log(444);
+            }
+        }
+    })
+</script>
