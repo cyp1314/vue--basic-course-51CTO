@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>模板</title>
+</head>
+<style>
+    /* 必须配置css样式，否则不生效 */
+    [v-cloak] {
+        display: none;
+    }
+</style>
+<body>
+    <!-- 
+        模板
+
+        1、vue.js使用基于html的模板语法，可以将dom绑定到vue实例中的数据
+        模板就是{{}}， 用来进行数据绑定，显示在页面中
+        也成为Mustache语法
+
+        2、数据绑定方式
+          a.双向绑定
+            v-model
+          b.单向绑定
+            方式1.使用两对大括号{{}}，可能会出现闪烁问题，可以使用v-cloak解决
+            方式2.使用v-text、v-html
+        3、其他指令
+        v-once 数据只绑定一次
+        v-pre 不编译，直接原样显示
+     -->
+
+    <div id="itany">
+        <input type="text" v-model='msg'>
+        <h3>aaa <span v-cloak>{{msg}}</span> </h3>
+        <h3 v-text="msg"></h3>
+        <h3 v-html="msg"></h3>
+        <h3 v-once>{{msg}}</h3>
+        <h3 v-pre>{{}}</h3>
+    </div>
+
+
+</body>
+
+</html>
+
+<script src="../js/vue.js"></script>
+<script>
+    /*
+        自定义键位别名
+    */
+    Vue.config.keyCode = {
+        a: 65,
+        f1: 112
+    }
+    var vm = new Vue({
+        el: '#itany',
+        data: { //存储数据
+            msg: 'hello world'
+        },
+        methods: { //存储方法
+           
+        }
+    })
+</script>

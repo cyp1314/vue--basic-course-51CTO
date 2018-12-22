@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>class属性和style属性</title>
+</head>
+<style>
+    .aa {
+        color: red;
+        font-size: 20px;
+    }
+    .cc {
+        background: #ccc;
+    }
+</style>
+<body>
+    <!-- 
+        class属性和style属性
+     -->
+
+    <div id="itany">
+            <!-- 可以访问：普通方式 -->
+        <!-- <p class="aa">南京网博</p>-->         
+
+        <!-- 不可以访问，vue的属性绑定时不能直接css样式 -->
+        <!-- <p :class="aa">南京网博</p> -->
+
+        <!-- 方式1：变量形式 -->
+        <!-- <p :class="bb">南京网博</p> -->
+
+        <!-- 方式2: 数组形式，同时引用多个 -->
+        <!-- <p :class="[bb,dd]">南京网博</p> -->
+
+        <!-- 方式3: json形式，常用！ -->
+        <!-- <p :class="{aa:true,cc:flag}">南京网博</p> -->
+        <!-- <p :class="{aa:num>0}">南京网博</p> -->
+
+        <!-- 方式4：变量引用json形式 -->
+         <!-- <p :class="hello">南京网博</p> -->
+
+
+         <!-- 
+            style
+          -->
+          <p :style="[xx,yy]">itany</p>
+    </div>
+
+
+</body>
+
+</html>
+
+<script src="../js/vue.js"></script>
+<script>
+    /*
+        自定义键位别名
+    */
+    Vue.config.keyCode = {
+        a: 65,
+        f1: 112
+    }
+    var vm = new Vue({
+        el: '#itany',
+        data: { //存储数据
+            bb: 'aa',
+            dd: 'cc',
+            flag: true,
+            num: -2,
+            hello: {aa:true,cc:true},
+            xx:{color:'blue',fontSize:'30px'},
+			yy:{backgroundColor:'#ff7300'}
+        },
+        methods: { //存储方法
+           
+        }
+    })
+</script>
