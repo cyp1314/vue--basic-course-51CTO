@@ -23,7 +23,8 @@
     -->
 
     <div id="itany">
-        
+        <button @click="send">发送ajax请求</button>
+        <button @click="sendGet">Get方式发送请求</button>
     </div>
 
 
@@ -31,7 +32,8 @@
 
 </html>
 
-<script src="../js/vue.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/axios.min.js"></script>
 <script>
     /*
         
@@ -43,7 +45,32 @@
             
         },
         methods: { 
-           
+           send() {
+               axios({
+                   methods: 'get',
+                   url: 'user.jsonass'
+               }).then (function (res) {
+                   console.log(res.data);
+               }).catch(res => {
+                   console.log(res);
+                   console.log('请求失败:' + res.status + ',' + res.statusText);
+               })
+           },
+           sendGet() {
+                axios.get('server.php?name=tom&age=23')
+               //axios.get('server.php')
+               .then(res => {
+                   console.log(res.data);
+               }).catch(res => {
+                   console.log('请求失败:' + res.status + ',' + res.statusText);
+               });
+           }
+
+
+
+
+
+
         },
         filters: {
             
