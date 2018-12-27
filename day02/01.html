@@ -20,10 +20,38 @@
               cnpm install axios -S
               也可以直接下载axios.min.js
 
+          2.2 基本用法
+            axios([options])
+            axios.get(url,data,[options]);
+                传参方式:
+                    1.通过url拼接字符串传参
+                    2.通过params选项传参
+            axios.post(url,data,[options]);
+                axios默认发送数据时，数据格式是Request Payload，
+                并非我们常用的Form Data格式。
+                所以参数必须以键值对形式传递，不能以json形式传参。
+                传参方式：
+                    1.自己拼接为键值对
+                    2.使用transformRequest，在请求发送前将数据进行转换
+                    3.如果使用模块化开发，可以使用qs模块进行转换
+            axios本身并不支持发送跨域请求，没有提供相应的api，作者也暂没有计划在axios添加
+            支持发送跨域请求，所以只能使用第三方库
+            
     -->
 
     <div id="itany">
-        
+        <button @click="send">发送ajax请求</button>
+        <button @click="sendGet">Get方式发送请求</button>
+        <button @click="sendPost">Post方式发送请求</button>
+        <hr>
+        <br>
+
+        GitHub ID: <input type="text" v-model="uid">
+        <button @click='getUserById(uid)'>获取指定github账户信息并显示</button>
+        <br>
+        姓名：{{user.name}}
+        <br>
+        头像：<img :src="user.avatar_url" alt="">
     </div>
 
 
@@ -31,7 +59,8 @@
 
 </html>
 
-<script src="../js/vue.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/axios.min.js"></script>
 <script>
     /*
         
@@ -40,10 +69,83 @@
     var vm = new Vue({
         el: '#itany',
         data: { 
-            
+            user: {
+                // name: 'alice',
+                // age: '21'
+            },
+            uid: ''
         },
         methods: { 
+           send() {
+               axios({
+                   methods: 'get',
+                   url: 'user.jsonass'
+               }).then (function (res) {
+                   console.log(res.data);
+               }).catch(res => {
+                   console.log(res);
+                   console.log('请求失败:' + res.status + ',' + res.statusText);
+               })
+           },
+           sendGet() {
+                // axios.get('server.php?name=tom&age=23')
+               axios.get('server.php',{
+                   params: {
+                       name: 'alice',
+                       age: 19
+                   }
+               })
+               .then(res => {
+                    //console.log(res);
+                   console.log(res.data);
+               }).catch(res => {
+                   console.log('请求失败:' + res.status + ',' + res.statusText);
+               });
+           },
+           sendPost() {
+            //    axios.post('server.php',{
+            //        name: 'alice',
+            //        age: '21'
+            //    })
+            //axios.post('server.php','name=alice&age=21')  //方式1
+            axios.post('server.php',this.user,{
+                transformRequest: [
+                    function (data) {
+                        let params= '';
+                        for (let index in data) {
+                            params += index+ '=' + data[index] + '&';
+                        }
+                        return params;
+                    }
+                ]
+            })
+               .then(res => {
+                   console.log(res.data);
+               }).catch(err => {
+                   console.log('请求失败：' + err.status + ',' + err.statusText);
+               })
+           },
+           getUserById(uid) {
+                // axios.get(`https://api.github.com/users/${uid}`)
+                // .then(res => {
+                //     console.log(res.data);
+                //     this.user=res.data;
+                // })
+                axios({
+                    methods: 'get',
+                    url: `https://api.github.com/users/${uid}`
+                }).then(res => {
+                    console.log(res.data);
+                    this.user=res.data;
+                })
+           }
            
+
+
+
+
+
+
         },
         filters: {
             
