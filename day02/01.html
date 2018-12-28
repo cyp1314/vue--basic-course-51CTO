@@ -36,7 +36,18 @@
                     3.如果使用模块化开发，可以使用qs模块进行转换
             axios本身并不支持发送跨域请求，没有提供相应的api，作者也暂没有计划在axios添加
             支持发送跨域请求，所以只能使用第三方库
-            
+        3、使用vue-resource发送跨域请求
+            3.1、安装vue-resource并引入
+                cnpm install vue-resource -S
+            3.2、基本用法
+                使用this.$http发送请求
+                    this.$http.get(url,[options])
+                    this.$http.head(url,[options])
+                    this.$http.delete(url,[options])
+                    this.$http.jsonp(url,[options])
+                    this.$http.post(url,[body],[options])
+                    this.$http.put(url,[body],[options])
+                    this.$http.patch(url,[body],[options])
     -->
 
     <div id="itany">
@@ -52,6 +63,11 @@
         姓名：{{user.name}}
         <br>
         头像：<img :src="user.avatar_url" alt="">
+        <hr>
+        <button @click="sendJSONP">向360搜索发送JSONP请求</button>
+        <button @click="sendJSONP2">向百度搜索发送JSONP请求</button>
+        <button @click="sendJSONP3">发送JSONP请求列表数据</button>
+        
     </div>
 
 
@@ -61,6 +77,7 @@
 
 <script src="js/vue.js"></script>
 <script src="js/axios.min.js"></script>
+<script src="js/vue-resource.min.js"></script>
 <script>
     /*
         
@@ -138,7 +155,45 @@
                     console.log(res.data);
                     this.user=res.data;
                 })
-           }
+           },
+           sendJSONP() {
+                //https://sug.so.360.cn/suggest?callback=suggest_so&encodein=utf-8&encodeout=utf-8&format=json&fields=word&word=aa
+                this.$http.jsonp('https://sug.so.360.cn/suggest',{
+                    params: {
+                        word: 'a'
+                    }
+                }).then(resp => {
+                    console.log(resp.data.s)
+                },response => {
+
+                })
+           },
+           sendJSONP2() {
+            //https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=a&json=1&p=3&sid=&req=2&csor=1&cb=jQuery1102014795544052467768_1546008638097&_=1546008638100    
+            this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',{
+                    params: {
+                        wd: 'a'
+                    },
+                    jsonp: 'cb' //修改jsonp参数名称，百度使用的jsonp参数名为cb，所以需要修改
+                }).then(resp => {
+                    console.log(resp.data.s)
+                },response => {
+
+                })
+           },
+           sendJSONP3() {
+            //https://app.westair.cn/flyplusV2/content/columninfo/list    
+            this.$http.jsonp('https://app.westair.cn/flyplusV2/content/columninfo/list',{
+                    // params: {
+                    //     word: 'a'
+                    // }
+                }).then(resp => {
+                    console.log(resp)
+                },resp => {
+                    console.log(resp)
+                })
+           },
+           
            
 
 
