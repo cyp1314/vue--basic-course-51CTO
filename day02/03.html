@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue生命周期</title>
+	<script src="js/vue.js"></script>
+	<script src="js/axios.min.js"></script>
+	<script src="js/vue-resource.min.js"></script>
+</head>
+<style>
+
+</style>
+<body>
+    <!-- 
+        vue实例从创建到销毁的过程，称为生命周期，共有八个阶段
+
+
+     -->
+	<div id="itany">
+        {{msg}}
+        <br>
+        <button @click="update">更新数据</button>
+        <button @click="destroy">销毁组件</button>
+	</div>
+</body>
+</html>
+<script>
+    window.onload=function(){
+        new Vue({
+            el:'#itany',
+            data:{
+               msg: 'welcome to itany'
+            },
+            methods:{
+               update() {
+                    this.msg='欢迎来到南京王博';
+               },
+               destroy() {
+                    this.$destroy();
+               }
+            },
+            beforeCreate() {
+                alert('组件实例刚刚创建，还为进行数据观测和事件配置')
+            },
+            created() {
+                alert('实例已经创建完成，并且已经进行数据观测和事件配置')
+            },
+            beforeMount() {
+                alert('模板编译之前，还没挂载');
+            },
+            mounted() {
+                alert('模板编译之后，已经挂载，此时才会渲染页面，才能看到页面上数据的展示')
+            },
+            beforeUpdate() {
+                alert('组件更新之前');
+            },
+            updated() {
+                alert('组件更新之后');
+            },
+            beforeDestroy() {
+                alert('组件销毁之前');
+            },
+            destroyed() {
+                alert('组件销毁之后');
+            }
+        });
+    }
+</script>

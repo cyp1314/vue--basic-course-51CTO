@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>发送AJAX请求百度搜索</title>
+	<script src="js/vue.js"></script>
+	<script src="js/axios.min.js"></script>
+	<script src="js/vue-resource.min.js"></script>
+</head>
+<style>
+    .current {
+        background-color: #ccc;
+    }
+</style>
+<body>
+	<div id="itany">
+        <!-- 双向绑定获取的值放到keyword里面，按下按键ajax获取搜索内容（$event阻止方向键上下获取ajax请求），方向键上下触发事件 -->
+        <input type="text" v-model="keyWord" @keyup="getData($event)" @keydown.down="changeDown" @keydown.up.prevent="changeUp">
+        <ul>
+            <!-- for循环myData值， 动态绑定class类，只有索引index为当前索引值触发class -->
+            <li v-for="(value,index) in myData" :class="{current:index==now}">
+                {{value}}
+            </li>
+        </ul>
+        <!-- 当myData长度为0时，显示 -->
+        <p v-show="myData.length==0">暂无数据。。。</p>
+	</div>
+</body>
+</html>
+<script>
+    window.onload=function(){
+        new Vue({
+            el:'#itany',
+            data:{
+                keyWord: '',  //存储输入的值
+                myData: [],    //存储请求获取到的数组数据
+                now: -1 //当前选中的索引
+            },
+            methods:{
+                getData(e) {
+                    //如果按方向键上、下，则不发请求
+                    if (e.keyCode==38||e.keyCode==40) return;
+
+                    this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',{
+                        params: {
+                            wd: this.keyWord  //输入的值赋给wd
+                        },
+                        jsonp: 'cb'
+                    }).then(resp => {
+                        this.myData = resp.data.s; //请求的数据赋给myData
+                        //console.log(this.myData)
+                    });
+                },
+                changeDown() {
+                    this.now++;  //执行此方法时，当前索引+1
+                    this.keyWord=this.myData[this.now]; //输入框的值=当前索引的数组的值
+                    if (this.now==this.myData.length) { //按下方向键，如果当前索引等于数组的长度，重置当前索引
+                        this.now=-1;
+                    }
+                },
+                changeUp() {
+                    this.now--;
+                    this.keyWord=this.myData[this.now];
+                    if (this.now==-2) {  //按上方向键，如果当前索引比-1小，那么当前索引=数组的长度-1（最后一个值）
+                        this.now=this.myData.length-1
+                    }
+                }
+            }
+        });
+    }
+</script>

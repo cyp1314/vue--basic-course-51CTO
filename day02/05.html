@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vue实例的属性和方法</title>
+	<script src="js/vue.js"></script>
+	<script src="js/axios.min.js"></script>
+	<script src="js/vue-resource.min.js"></script>
+</head>
+<style>
+
+</style>
+<body>
+    <!-- 
+        vue实例的属性和方法
+        1、属性
+            vm.$el  Vue 实例使用的根 DOM 元素。
+            vm.$data  Vue 实例观察的数据对象。Vue 实例代理了对其 data 对象属性的访问。
+            vm.$options  用于当前 Vue 实例的初始化选项。需要在选项中包含自定义属性时会有用处
+            vm.$refs  一个对象，持有注册过 ref 特性 的所有 DOM 元素和组件实例。
+        2、方法
+            vm.$mount()  完全销毁一个实例。清理它与其它实例的连接，解绑它的全部指令及事件监听器。
+            vm.$destroy()  完全销毁一个实例。清理它与其它实例的连接，解绑它的全部指令及事件监听器。
+            vm.$nextTick(callback)  将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。
+
+            vm.$set(object,key,value)  向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新。
+            vm.$delete(object,key)  删除对象的属性。
+            vm.$watch(data,callback,[options])  观察 Vue 实例变化的一个表达式或计算属性函数。
+     -->
+	<div id="itany">
+        {{msg}}
+
+        <h2 ref="hello">你好</h2>
+        <p ref="world">世界</p>
+        <hr>
+
+        <h1 ref="title">标题：{{name}}</h1>
+	</div>
+</body>
+</html>
+<script>
+    //  var vm = new Vue({
+    //         el:'#itany',
+    //         data:{  //普通属性
+    //           msg: 'welcome to itany'
+    //         },
+    //         name: 'tom',
+    //         age: 24,
+    //         show:function () {
+    //             console.log('show');
+    //         },
+    //         computed: {  //计算属性
+                
+    //         },
+    //         methods:{
+                
+    //         }
+    //     });
+        /*
+            属性
+        */
+        //vm.属性名  获取data中的属性
+        // console.log(vm.msg);
+
+        //vm.$el 获取vue实例关联的元素
+      //  console.log(vm.$el);  //DOM对象
+       // vm.$el.style.color='red'
+
+       //vm.$data //获取数据对象data
+     //  console.log(vm.$data);
+       //console.log(vm.$data.msg);
+
+       //vm.$options 获取自定义属性
+    //    console.log(vm.$options.name);
+    //    console.log(vm.$options.age);
+    //    vm.$options.show();
+
+        //vm.$refs 获取所有添加ref属性的元素
+        // console.log(vm.$refs);
+        // console.log(vm.$refs.hello);  //DOM对象
+        // vm.$refs.hello.style.color='blue'
+
+
+        /*
+            方法
+        */
+        //vm.$mount() 手动挂载vue实例
+       // vm.$mount('#itany');
+        var vm = new Vue({
+            data: {
+                msg: '欢迎来到南京网博',
+                name: 'tom'
+            }
+        }).$mount('#itany');
+
+        //vm.$destroy() 销毁实例
+        // vm.$destroy();
+        // console.log(vm.msg);
+
+        //vm.$nextTick(callback) 在DOM更新完成后再执行回调函数，一般在修改数据之后使用该方法，以便获取更新后的DOM
+        //修改数据
+        vm.name='唐末';
+        //DOM还没更新完，Vue实现响应式并不是数据发生改变之后DOM立即变化，需要按一定的策略进行DOM更新，需要时间！
+        console.log(vm.$refs.title.textContent);
+        vm.$nextTick(function() {
+            //DOM更新完成，更新完成后在执行此代码
+            console.log(vm.$refs.title.textContent);
+        })
+
+
+</script>
