@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>监视数据的变化：$watch</title>
+    <script src="js/vue.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/vue-resource.min.js"></script>
+</head>
+<style>
+
+</style>
+
+<body>
+    <!-- 
+        vue实例的属性和方法
+        1、属性
+            vm.$el  Vue 实例使用的根 DOM 元素。
+            vm.$data  Vue 实例观察的数据对象。Vue 实例代理了对其 data 对象属性的访问。
+            vm.$options  用于当前 Vue 实例的初始化选项。需要在选项中包含自定义属性时会有用处
+            vm.$refs  一个对象，持有注册过 ref 特性 的所有 DOM 元素和组件实例。
+        2、方法
+            vm.$mount()  完全销毁一个实例。清理它与其它实例的连接，解绑它的全部指令及事件监听器。
+            vm.$destroy()  完全销毁一个实例。清理它与其它实例的连接，解绑它的全部指令及事件监听器。
+            vm.$nextTick(callback)  将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。
+
+            vm.$set(object,key,value)  向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新。
+            vm.$delete(object,key)  删除对象的属性。
+
+            vm.$watch(data,callback,[options])  观察 Vue 实例变化的一个表达式或计算属性函数。
+            发送ajax请求，把变化后的值发送个服务器端做判断
+     -->
+    <div id="itany">
+        <input v-model="name" type="text">
+        <h2>{{name}}</h2>
+        <input v-model="age" type="text">
+        <h2>{{age}}</h2>
+        <input type="text" v-model="user.name">
+        <h2>{{user.name}}</h2>
+        <input type="text" v-model="info.age">
+        <h2>{{info.age}}</h2> 
+    </div>
+</body>
+
+</html>
+<script>
+    var vm = new Vue({
+        el: '#itany',
+        data: {
+            name: 'tom',
+            age: 23,
+            user: {
+                id: 1010,
+                name: 'alice'
+            },
+            info: {
+                id: 100,
+                age: 123
+            }
+        },
+        methods: {
+
+        },
+        watch: { //方式2：使用vue实例提供的watch选项
+            age: (newValue, oldValue) => {
+                console.log('age被修改了,原值' + oldValue, '旧值：' + newValue);
+            },
+            user: {
+                handler: (newValue, oldValue) => {
+                    console.log('user被修改了,原值' + oldValue.name, '旧值：' + newValue.name);
+                },
+                deep: true //深度监视，当对象中的属性发生变化时也会监视
+            },
+            info: [
+                function handle1(newValue, oldValue){
+                    console.log('info被修改了,原值' + oldValue.name, '旧值：' + newValue.name);
+                }
+            ],
+            'info.age': function (newValue, oldValue){
+                    console.log('info.age被修改了,原值' + oldValue, '旧值：' + newValue);
+                }
+        }
+
+    });
+    //方式1：使用vue实例提供的$watch()方法
+    vm.$watch('name', function (newValue, oldValue) {
+        console.log('name被修改了,原值' + oldValue, '旧值：' + newValue);
+    })
+</script>

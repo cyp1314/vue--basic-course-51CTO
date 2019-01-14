@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>添加和删除属性：$set、$delete</title>
+	<script src="js/vue.js"></script>
+	<script src="js/axios.min.js"></script>
+	<script src="js/vue-resource.min.js"></script>
+</head>
+<style>
+
+</style>
+<body>
+    <!-- 
+        vue实例的属性和方法
+        1、属性
+            vm.$el  Vue 实例使用的根 DOM 元素。
+            vm.$data  Vue 实例观察的数据对象。Vue 实例代理了对其 data 对象属性的访问。
+            vm.$options  用于当前 Vue 实例的初始化选项。需要在选项中包含自定义属性时会有用处
+            vm.$refs  一个对象，持有注册过 ref 特性 的所有 DOM 元素和组件实例。
+        2、方法
+            vm.$mount()  完全销毁一个实例。清理它与其它实例的连接，解绑它的全部指令及事件监听器。
+            vm.$destroy()  完全销毁一个实例。清理它与其它实例的连接，解绑它的全部指令及事件监听器。
+            vm.$nextTick(callback)  将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。
+
+            vm.$set(object,key,value)  向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新。
+            vm.$delete(object,key)  删除对象的属性。
+            vm.$watch(data,callback,[options])  观察 Vue 实例变化的一个表达式或计算属性函数。
+     -->
+	<div id="itany">
+        <button @click="doUpdate">修改属性</button>
+        <button @click="doAdd">添加属性</button>
+        <button @click="doDelete">删除属性</button>
+        <hr>
+        <h2>{{user.name}}</h2>
+        <h2>{{user.age}}</h2>
+	</div>
+</body>
+</html>
+<script>
+    var vm = new Vue({
+        el: '#itany',
+        data: {
+            user: {
+                id: 1001,
+                name:'tom'
+            }
+        },
+        methods: {
+            doUpdate() {
+                this.user.name="汤姆"
+            },
+            doAdd() {
+                //通过普通的方式为对象添加属性时vue无法监视
+                //this.$set(this.user,'age',18); //通过Vue实例的$set方法，为对象添加属性，可以实时监控
+                // Vue.set(this.user,'age',18)
+                if(this.user.age) {  //如果之前有age，那么age+1
+                    this.user.age++;
+                } else {  //否则添加age属性，key值加单引号
+                    Vue.set(this.user,'age',20);
+                }
+                // console.log(this.user)
+            },
+            doDelete() {
+                if(this.user.age) {
+                    // delete this.user.age; //无效
+                    Vue.delete(this.user,'age');
+                }
+            }
+        }
+    })
+</script>
