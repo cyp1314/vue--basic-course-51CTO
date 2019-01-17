@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>引用模板</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        组件component
+      4. 引用模板
+        将组件内容放到模板<template>中并引用
+       
+     -->
+
+    <div id="itany">
+        <!-- 创建组件实例（引用组件） -->
+        <my-hello></my-hello>  
+        <my-hello></my-hello>  
+    </div>
+    <template id="wbs">
+        <!-- template必须有且只有一个根元素 -->
+        <div>
+            <h3>{{msg}}</h3>
+            <ul>
+                <li v-for="value in arr">{{value}}</li>
+            </ul>
+        </div>
+    </template>
+
+    <script>
+        var vm = new Vue({ //这里的vm也是一个组件，称为根组件
+            el: '#itany',
+            data: {
+
+            },
+            components: { //注册局部组件
+                'my-hello': {
+                    name: 'werew234', //组件的名字，默认为标签名，可以不设置
+                    template: '#wbs', //组件id
+                    data() {
+                        return {
+                            msg: '欢迎',
+                            arr: ['tom', 'jack', 'clice']
+                        }
+                    }
+                },
+
+            }
+        })
+    </script>
+</body>
+
+</html>

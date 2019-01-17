@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>定义组件的两种方式</title>
+	<script src="js/vue.js"></script>
+</head>
+<body>
+    <!-- 
+        组件component
+        1、什么是组件
+        组件(component)是vue.js最强大的功能之一，组件可以扩展html元素，封装可重用的代码
+        组件是自定义元素（对象）
+        2、定义组件的方式
+        方式1.先创建组件构造器，然后由组件构造器创建组件
+        方式2.直接创建组件
+
+     -->
+	<div id="itany">
+        <hello></hello>
+        <my-world></my-world>
+	</div>
+
+	<script>
+        //方式1.先创建组件构造器，然后由组件构造器创建组件
+        //1.创建一个组件构造器
+        var MyComponent = Vue.extend({
+            template: '<h3>Hello World</h3>'  //创建模板
+        })
+        //2.使用Vue.component(标签名，组件构造器)，根据组件构造器来创建组件
+        Vue.component('hello',MyComponent);
+
+        //方式2.直接创建组件
+        Vue.component('my-world',{
+            template: '<h1>你好</h1>'
+        });
+       var vm = new Vue({  //这里的vm也是一个组件，称为根组件
+            el: '#itany',
+            data: {
+                msg: '王博'
+            }
+        })
+       
+	</script>
+</body>
+</html>

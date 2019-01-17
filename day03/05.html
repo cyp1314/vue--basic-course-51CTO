@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>父子组件及组件间数据传递</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+      
+       
+     -->
+
+    <div id="itany">
+        <my-hello></my-hello>
+        
+
+    </div>
+
+    <template id="hello">
+        <div>
+            <h2>我是hello父组件</h2>
+            <h3>父组件访问自己的数据，{{msg}},{{name}},{{age}},{{user.username}}</h3>
+            <h3>访问子组件的数据：{{sex}},{{height}}</h3>
+            <hr>
+
+            <!-- ：message："msg" 绑定想要获取的父组件中的数据-->
+            <!-- @e-world="getData"  在子组件监听事件，执行父组件方法获取数据-->
+            <my-world  
+                :message="msg"  
+                :name="name"
+                :age="age"
+                :user="user"
+                @e-world="getData"
+            ></my-world>
+        </div>
+    </template>
+    <template id="world">
+        <div>
+            <h4>我是world子组件</h4>
+            <!-- 在子组件渲染父组件数据 -->
+            <h3>访问父组件的数据，{{message}},{{name}},{{age}},{{user.username}}</h3>
+            <h3>子组件访问自己的数据：{{sex}},{{height}}</h3>
+            <button @click="send">将子组件的数据向上传递给父组件</button>
+        </div>
+    </template>
+    <script>
+        /*  
+            1.父子组件
+            在一个组件内部定义另一个组件，称为父子组件
+            子组件只能在父组件内部使用
+            默认情况下，子组件无法访问父组件中的数据，每个组件实例的作用域是独立的
+
+            2.组件间数据传递（通信）
+                2.1 子组件访问父组件的数据
+                    a)在调用子组件时，绑定想要获取的父组件中的数据
+                    b)在子组件内部，使用props选项声明获取的数据，即接收来自父组件的数据
+                    总结：父组件通过props向下传递数据给子组件
+                    注：组建中的数据共有三种形式：data、props、computed
+
+                2.2 父组件访问子组件的数据
+                    a)在子组件中使用vm.$emit(事件名，数据)
+                    触发一个自定义事件，事件名自定义
+                    b)父组件在使用子组件的地方监听子组件触发的事件，并在父组件中定义方法，用来获取数据
+                    总结：子组件通过events给父组件发送消息，实际上就是子组件把自己的数据发送到父组件
+        */
+        var vm = new Vue({ //根组件
+            el: '#itany',
+            data: {
+
+            },
+            components: { //父组件
+                'my-hello': {
+                    data() {
+                        return {
+                            msg: 'wangbo',
+                            name: 'tom',
+                            age: 23,
+                            user: {
+                                id: 233,
+                                username: 'tangbohu'
+                            },
+                            sex:'',  //初始化子组件数据
+                            height: 0
+                        }
+                    },
+                    methods:{
+                        getData(sex,height){
+                            this.sex=sex;
+                            this.height=height;
+                        }
+                    },
+                    template: '#hello',
+                    components: { //子组件
+                        'my-world': {
+                            data() {
+                                return {
+                                    sex: 'man',
+                                    height: 168
+                                }
+                            },
+                            template: '#world',
+                            props: {  //通过props选项获取父组件数据，使用对象方式，允许配置高级设置，如：类型判断，数据校验，设置默认值
+                                message: String,
+                                name: {
+                                    type: String,
+                                    required: true //必须填的字符串
+                                },
+                                age: {
+                                    type: Number,
+                                    default: 18,  //默认值
+                                    validator: function(value) {
+                                        if(value >= 0) {
+                                            return true;
+                                        }else {
+                                            alert('cuowu');
+                                        }
+                                        
+                                    }
+                                },
+                                user: {
+                                    type: Object,
+                                    //对象或数组的默认值必须使用函数的形式来返回
+                                    default: function() {
+                                        return {id:34324,username:"qwiuxiang"}
+                                    }
+                                }
+                            },
+                            methods:{
+                                send() {
+                                    // console.log(this); //此处的this表示当前子组件实例
+                                    this.$emit('e-world',this.sex,this.height);
+                                    // 使用$emit()触发一个事件，发送数据
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
