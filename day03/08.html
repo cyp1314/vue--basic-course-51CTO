@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>slot内容分发</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        slot内容分发
+        本意：位置，槽
+        作用：用来获取组件中的原内容，类似angular中的transclude指令
+     -->
+     
+    <div id="itany">
+            <my-hello>
+                <ul slot="s2">
+                    <li>1</li>
+                    <li>2</li>
+                    <li>3</li>
+                </ul>
+                <ol slot="s1">
+                    <li>1</li>
+                    <li>2</li>
+                    <li>3</li>
+                </ol>
+            </my-hello>
+    </div>
+   <template id="hello">
+       <div>
+           <slot name="s1"></slot>
+           <h3>欢迎</h3>
+           <slot name="s2">如果没有原内容显示该内容，如果有内容，则显示内容</slot>
+       </div>
+   </template>
+    <script>
+        /*  
+           
+        */
+        var vm = new Vue({
+            el: '#itany',
+            data: {
+
+            },
+            components: {
+                'my-hello': {
+                    template: '#hello'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

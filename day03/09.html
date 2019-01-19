@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>路由基本用法</title>
+    <script src="js/vue.js"></script>
+    <script src="js/vue-router.js"></script>
+</head>
+<style>
+    /* .router-link-active{
+			font-size:20px;
+			color:#ff7300;
+			text-decoration:none;
+        } */
+        .active{
+			font-size:20px;
+			color:#ff7300;
+			text-decoration:none;
+		}
+</style>
+<body>
+    <!-- 
+        vue-router路由
+        1、简介
+        使用vue.js开发SPA（Single Page Application）单页面应用
+        根据不同url地址，显示不同的内容，但显示在同一个页面中，称为单页面应用
+        [参考](https://router.vuejs.org/zh-cn) 
+        bower info vue-router
+        cnpm install vue-router -S
+        2、基本用法
+        a.布局
+        b.配置路由
+     -->
+
+    <div id="itany">
+        <div>
+            <!-- 使用 router-link 组件来导航. -->
+            <!-- 通过传入 `to` 属性指定url. -->
+            <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+            <router-link to="/home">主页</router-link>
+            <router-link to="/news">新闻</router-link>
+        </div>
+        <div>
+            <!-- 路由出口 -->
+            <!-- 路由匹配到的组件将渲染在这里 -->
+            <router-view ></router-view>
+        </div>
+    </div>
+
+    <script>
+        /*  
+           
+        */
+       //1.定义组件
+       var Home= {
+           template: '<h3>我是主页</h3>'
+       }
+       var News= {
+           template: '<h3>我是新闻</h3>'
+       }
+       //2.定义路由
+       const routes = [
+            {path:'/home',component:Home},
+            {path:'/news',component:News},
+            {path: '*',redirect:'/home'} //重定向
+       ]
+       //3.创建路由实例
+       const router= new VueRouter({
+           routes, //简写，相当于routes：routes
+            // mode: 'history', //更改模式，默认为hash
+            linkActiveClass:'active' //更改活动链接的class类名
+       }); 
+       //4.创建根实例并将路由挂载到Vue实例上
+        var vm = new Vue({
+            el: '#itany',
+            router //注入路由
+
+        })
+    </script>
+</body>
+
+</html>

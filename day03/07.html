@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>非父子组件间的通信</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        4.非父子组件间的通信
+            非父子组件间的通信，可以通过一个空的vue实例作为中央事件总线（事件中心），用它来触发事件和监听事件
+
+            var Event = new Vue();
+            Event.$emit(事件名，数据);  //触发事件
+            Event.$on(事件名，data=>{});  //监听事件
+     -->
+
+    <div id="itany">
+        <my-a></my-a>
+        <my-b></my-b>
+        <my-c></my-c>
+    </div>
+    <template id="a">
+        <div>
+            <h3>A组件：{{name}}</h3>
+            <button @click="send">将数据发送给C组件</button>
+        </div>
+    </template>
+    <template id="b">
+        <div>
+            <h3>B组件：{{age}}</h3>
+            <button @click="send">将数据发送给C组件</button>
+        </div>
+    </template>
+    <template id="c">
+        <div>
+            <h3>C组件：{{name}},{{age}}</h3>
+        </div>
+    </template>
+    <script>
+        /*  
+           
+        */
+       //定义一个空的vue实例
+        var Event = new Vue;
+
+        var A = {   //所传数据为对象，可以单独拿出来赋给一个变量，数据更清晰
+            template: '#a',
+            data() {
+                return {
+                    name: 'tom'
+                }
+            },
+            methods: {
+                send() {
+                    alert(A)
+                    Event.$emit('data-a',this.name);
+                }
+            }
+        }
+        var B = {
+            template: '#b',
+            data() {
+                return {
+                    age: 24
+                }
+            },
+            methods: {
+               send() {
+                alert(B);
+                Event.$emit('data-b',this.age);
+               }
+            }
+        }
+        var C = {
+            template: '#c',
+            data() {
+                return {
+                    name: '',
+                    age: ''
+                }
+            },
+            mounted () {  //在模板编译完成后执行
+                alert('C')
+                Event.$on('data-a',name => {  //这里必须用箭头函数，不会产生新的this，这里的this指向 var C
+                    this.name = name;
+                    console.log(this);
+                });
+                Event.$on('data-b',age => {
+                    this.age = age;
+                })
+            }
+        }
+        var vm = new Vue({
+            el: '#itany',
+            data: {
+
+            },
+            components: {
+                'my-a': A,  
+                'my-b': B,
+                'my-c': C
+            }
+        })
+    </script>
+</body>
+
+</html>
