@@ -1,0 +1,6 @@
+{
+    //配置插件
+	"presets":[   
+		["env",{"module":false}]
+	]
+}
