@@ -1,8 +1,8 @@
 {
-  "name": "vue-cli-demo",
+  "name": "element-demo",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "张勇 <758922096@qq.com>",
+  "author": "ynzy <a758922096@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -10,8 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "element-ui": "^2.4.11",
+    "element-ui": "^2.5.4",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
@@ -42,7 +41,6 @@
     "rimraf": "^2.6.0",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
-    "style-loader": "^0.23.1",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
     "vue-loader": "^13.3.0",
