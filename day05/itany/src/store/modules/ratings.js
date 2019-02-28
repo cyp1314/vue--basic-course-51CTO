@@ -15,7 +15,7 @@ const actions = {
   getRatings({
     commit
   }, state) {
-    axios.get('https://www.easy-mock.com/mock/5c74af248a68351906bd9aaf/example/ratings').then(resp => {
+    axios.get('/ratings').then(resp => {
     //   console.log(resp);
       if (resp.data.success == 200) {
         commit(types.GET_RATINGS, resp.data.ratings);

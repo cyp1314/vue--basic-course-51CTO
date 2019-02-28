@@ -10,14 +10,29 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {  //NOTE:配置这个接口链接地址
+    proxyTable: {  
       '/goods': {
         target: 'https://www.easy-mock.com/mock/5c74af248a68351906bd9aaf/example/goods',
         changeOrigin: true,  //是否跨域
-        // pathRewrite: {
-        //   '^/goods': '' //因为ajax的url中加了前缀'api'，而原本的接口是没有这个前缀的
-        // }
-      }
+        pathRewrite: {
+          '^/goods': '' //因为ajax的url中加了前缀'api'，而原本的接口是没有这个前缀的
+        }
+      },
+      '/ratings': {  //匹配项,放在项目调用中
+        target: 'https://www.easy-mock.com/mock/5c74af248a68351906bd9aaf/example/ratings', // 接口域名
+        // secure: false,  // 如果是https接口，需要配置这个参数
+        changeOrigin: true, //是否跨域
+        pathRewrite: { //重写地址
+          '^/ratings': '' //因为接口中没有这个匹配项，所以要重写地址，才能正常访问
+        }
+      },
+      '/seller': {
+        target: 'https://easy-mock.com/mock/5c74af248a68351906bd9aaf/example/seller',
+        changeOrigin: true,  
+        pathRewrite: {
+          '^/seller': '' 
+        }
+      },
     },
 
     // Various Dev Server settings

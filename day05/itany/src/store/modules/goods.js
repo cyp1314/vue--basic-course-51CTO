@@ -15,8 +15,8 @@ const actions = {
   getGoods({
     commit
   }, state) {
-    axios.get('https://www.easy-mock.com/mock/5c74af248a68351906bd9aaf/example/goods').then(resp => {
-      //  console.log(resp);
+    axios.get('/goods').then(resp => {
+        console.log(resp);
       if (resp.data.success == 200) {
         commit(types.GET_GOODS, resp.data.goods);
       }

@@ -17,7 +17,7 @@ const getters = {
 
 const actions = {
   getSeller({commit}, state) {
-    axios.get('https://easy-mock.com/mock/5c74af248a68351906bd9aaf/example/seller').then(resp=>{
+    axios.get('/seller').then(resp=>{
         // console.log(resp);
         if(resp.data.success==200) {
             commit(types.GET_SELLER, resp.data.seller);
